@@ -11,7 +11,23 @@ struct item {
 };
 
 int greedyMaxWeight(vector<item> items, int maxWeight) {
+    auto cmp = [](item left, item right) {return ((left.weight) >= (right.weight));};
+    priority_queue<item, vector<item>, decltype(cmp)> q(cmp);
 
+    for(item i : items) {
+        q.push(i);
+    }
+
+    int currWeight = 0, currBenefit = 0;    
+    while(!q.empty()) {
+        if(currWeight + q.top().weight <= maxWeight) {
+            currWeight += q.top().weight;
+            currBenefit += q.top().benefit;
+        }
+        q.pop();
+    }
+
+    return currBenefit;
 }
 
 int dynamicKnapsack(vector<item> items, int maxWeight) {
@@ -38,7 +54,8 @@ int main(void) {
         list.push_back(item(b, w));
     }
 
-    cout<<"maximum benefit is " << dynamicKnapsack(list, W);
+    cout<<"maximum benefit (dynamic) is " << dynamicKnapsack(list, W)<<endl;
+    cout<<"maximum benefit (greedy maxweight) is "<< greedyMaxWeight(list, W)<<endl;
 
     return 0;
 }
