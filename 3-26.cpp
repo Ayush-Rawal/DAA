@@ -39,12 +39,31 @@ int greedyMaxRatio(vector<item> items, int maxWeight) {
         q.push(i);
     }
 
-    int currWeight = 0, currBenefit = 0;    
+    int currWeight = 0, currBenefit = 0;
     while(!q.empty()) {
         if(currWeight + q.top().weight <= maxWeight) {
             currWeight += q.top().weight;
             currBenefit += q.top().benefit;
         }
+        q.pop();
+    }
+
+    return currBenefit;
+
+}
+
+float greedyMaxWeightFractionalKnapsack(vector<item> items, float maxWeight) {
+    auto cmp = [](item left, item right) {return ((left.weight) <= (right.weight));};
+    priority_queue<item, vector<item>, decltype(cmp)> q(cmp);
+
+    for(item i : items) {
+        q.push(i);
+    }
+    float currWeight = 0, currBenefit = 0;
+    while(!q.empty()) {
+        cout<<"Selected weight ratio: "<<selectedWeightRatio;
+        currBenefit += q.top().benefit * selectedWeightRatio; 
+        currWeight += q.top().weight * selectedWeightRatio;
         q.pop();
     }
 
@@ -76,7 +95,9 @@ int main(void) {
     }
 
     cout<<"maximum benefit (dynamic) is " << dynamicKnapsack(list, W)<<endl;
-    cout<<"maximum benefit (greedy maxweight) is "<< greedyMaxWeight(list, W)<<endl;
+    cout<<"maximum benefit (greedy maxWeight) is "<< greedyMaxWeight(list, W)<<endl;
+    cout<<"maximum benefit (greedy maxRatio) is "<< greedyMaxRatio(list, W)<<endl;
+    cout<<"maximum benefit (greedy maxWeight Fractional) is "<< greedyMaxWeightFractionalKnapsack(list, W)<<endl;
 
     return 0;
 }
