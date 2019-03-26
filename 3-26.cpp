@@ -59,9 +59,29 @@ float greedyMaxWeightFractionalKnapsack(vector<item> items, float maxWeight) {
     for(item i : items) {
         q.push(i);
     }
+
     float currWeight = 0, currBenefit = 0;
     while(!q.empty()) {
-        cout<<"Selected weight ratio: "<<selectedWeightRatio;
+        float selectedWeightRatio = min((maxWeight - currWeight)/q.top().weight, 1.0f);
+        currBenefit += q.top().benefit * selectedWeightRatio; 
+        currWeight += q.top().weight * selectedWeightRatio;
+        q.pop();
+    }
+
+    return currBenefit;
+}
+
+float greedyMaxRatioFractionalKnapsack(vector<item> items, float maxWeight) {
+    auto cmp = [](item left, item right) {return ((left.benefit/left.weight) <= (right.benefit/right.weight));};
+    priority_queue<item, vector<item>, decltype(cmp)> q(cmp);
+
+    for(item i : items) {
+        q.push(i);
+    }
+
+    float currWeight = 0, currBenefit = 0;
+    while(!q.empty()) {
+        float selectedWeightRatio = min((maxWeight - currWeight)/q.top().weight, 1.0f);
         currBenefit += q.top().benefit * selectedWeightRatio; 
         currWeight += q.top().weight * selectedWeightRatio;
         q.pop();
@@ -98,6 +118,7 @@ int main(void) {
     cout<<"maximum benefit (greedy maxWeight) is "<< greedyMaxWeight(list, W)<<endl;
     cout<<"maximum benefit (greedy maxRatio) is "<< greedyMaxRatio(list, W)<<endl;
     cout<<"maximum benefit (greedy maxWeight Fractional) is "<< greedyMaxWeightFractionalKnapsack(list, W)<<endl;
+    cout<<"maximum benefit (greedy maxRatio Fractional) is "<< greedyMaxRatioFractionalKnapsack(list, W)<<endl;
 
     return 0;
 }
