@@ -1,4 +1,4 @@
-// Dynamic Solution to 0-1 Knapsack problem
+// Dynamic and greedy Solution to 0-1 Knapsack problem
 #include<iostream>
 #include<vector>
 #include<queue>
